@@ -1,8 +1,8 @@
 import React from 'react'
 import styles from '../../style';
 import {
-    Billing,
-    CardDeal,
+    Management,
+    Deal,
     Business,
     Clients,
     CTA,
@@ -17,8 +17,8 @@ const Home = () => {
             <Hero />
             <Stats />
             <Business />
-            <Billing />
-            <CardDeal />
+            <Management />
+            <Deal />
             <Testimonials />
             <Clients />
             <CTA />

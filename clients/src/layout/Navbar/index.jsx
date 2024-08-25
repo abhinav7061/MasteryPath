@@ -10,7 +10,7 @@ const Navbar = () => {
         <nav className="w-full flex justify-between items-center navbar h-20
         ">
             <div className="md:w-auto w-full flex justify-between">
-                <img src={logo} alt="prabhi Cmmunity" className="w-[124px] h-[32px] object-fill" />
+                <img src={logo} alt="Mastery path" className="w-[124px] object-contain" />
                 <div className="text-3xl md:hidden" onClick={() => setOpen((open) => !open)}>
                     <img src={open ? close : menu} alt="menu" className="" />
                 </div>

@@ -237,46 +237,46 @@ export const features = [
   {
     id: "feature-1",
     icon: star,
-    title: "Rewards",
+    title: "Engaging Courses",
     content:
-      "The best credit cards offer some tantalizing combinations of promotions and prizes",
+      "Our courses combine expert knowledge and interactive elements to keep you motivated and inspired.",
   },
   {
     id: "feature-2",
     icon: shield,
-    title: "100% Secured",
+    title: "100% Personalized",
     content:
-      "We take proactive steps make sure your information and transactions are secure.",
+      "We tailor learning paths to fit your unique needs and goals, ensuring a truly custom experience.",
   },
   {
     id: "feature-3",
     icon: send,
-    title: "Balance Transfer",
+    title: "Career Advancement",
     content:
-      "A balance transfer credit card can save you a lot of money in interest charges.",
+      "Boost your credentials and grow your career with courses that provide real-world, applicable skills.",
   },
 ];
 
 export const feedback = [
   {
-    content: "Money is only a tool. It will take you wherever you wish, but it will not replace you as the driver.",
+    content: "Learning is a lifelong adventure. It will take you to places you never imagined, but you remain the one in control of your destiny.",
     id: 1,
     name: "Herman Jensen",
-    title: "Founder & Leader",
+    title: "Founder & CEO",
     img: people01,
   },
   {
-    content: "Money makes your life easier. If you're lucky to have it, you're lucky.",
+    content: "Education broadens your horizons. If you're fortunate to have it, you're fortunate indeed.",
     id: 2,
     name: "Steve Mark",
     title: "Founder & Leader",
     img: people02,
   },
   {
-    content: "It is usually people in the money business, finance, and international trade that are really rich.",
+    content: "It's often those in the world of knowledge, research, and innovation who create the most significant impact.",
     id: 3,
     name: "Kenn Gallagher",
-    title: "Founder & Leader",
+    title: "Founder & COO",
     img: people03,
   },
 ];
@@ -294,7 +294,7 @@ export const stats = [
   },
   {
     id: "stats-3",
-    title: "Transaction",
+    title: "Students",
     value: "$230M+",
   },
 ];

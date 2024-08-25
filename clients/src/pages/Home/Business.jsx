@@ -23,13 +23,13 @@ const Business = () => (
   <section id="features" className={layout.section}>
     <div className={`${layout.sectionInfo} flex-1`}>
       <h2 className={styles.heading2}>
-        You do the business,  <br className="md:block hidden" /> we’ll handle
-        the money.
+        You bring the curiosity,  <br className="md:block hidden" /> we’ll handle
+        the learning.
       </h2>
       <p className={`${styles.paragraph} mt-5 md:max-w-[470px] `}>
-        With the right credit card, you can improve your financial life by
-        building credit, earning rewards and saving money. But with hundreds
-        of credit cards on the market.
+        With the right courses, you can unlock your potential,
+        gain new skills, and advance your career.
+        But with countless learning platforms available.
       </p>
 
       <Button styles={`mt-10`} />

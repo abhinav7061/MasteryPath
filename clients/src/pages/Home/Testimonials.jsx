@@ -8,11 +8,12 @@ const Testimonials = () => (
 
     <div className="w-full flex justify-between items-center md:flex-row flex-col gap-6 sm:mb-16 mb-6 relative z-[1]">
       <h2 className={styles.heading2}>
-        What People are saying about us
+        What Learners are saying about us
       </h2>
       <p className={`${styles.paragraph}`}>
-        Everything you need to accept card payments and grow your business
-        anywhere on the planet.
+        Empowering learners with the knowledge
+        they need to succeed in their careers and personal growth,
+        no matter where they are in the world.
       </p>
     </div>
 
