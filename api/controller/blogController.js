@@ -4,12 +4,25 @@ const { sendErrorResponse } = require("../lib/sendError");
 const { renameFileUploadedByMulter } = require("../lib/renameFileUploadedByMulter");
 const { deleteFile } = require("../lib/deleteFile");
 
-exports.getAllBlogs = async (req, res) => {
-    const blogs = await Blog.find()
-        .populate('author', ['name'])
-        .sort({ createdAt: -1 })
-        .limit(20);
-    return res.json(blogs);
+exports.getAllBlogSummaries = async (req, res) => {
+    try {
+        const limit = req.query.limit || 8;
+        const page = req.query.page || 0;
+        const offset = page * limit;
+
+        const blogsSummary = await Blog.find()
+            .select("title summary cover author createdAt")
+            .populate('author', ['name'])
+            .skip(offset)
+            .sort({ createdAt: -1 })
+            .limit(limit);
+        return res.json({
+            success: true,
+            blogsSummary
+        });
+    } catch (error) {
+        sendErrorResponse(res, 400, error.message);
+    }
 };
 
 exports.getBlog = async (req, res) => {
@@ -39,7 +52,6 @@ exports.createBlog = async (req, res) => {
         const authorId = req.user._id;
         const ulr = await renameFileUploadedByMulter(originalname, path);
         const { title, summary, content } = req.body;
-        console.log({ authorId, title, summary, content });
         await Blog.create({
             title,
             summary,
@@ -63,12 +75,6 @@ exports.editBlog = async (req, res) => {
         const { blogId } = req.params;
         const authorId = req.user._id;
         const postDoc = await Blog.findById(blogId);
-        // console.log({
-        //     postDoc,
-        //     authorId: authorId.toString(),
-        //     postAuthor: postDoc.author.toString(),
-        //     test: postDoc.author.toString() !== authorId.toString()
-        // })
         if (!postDoc) {
             return sendErrorResponse(res, 404, 'Post not found');
         }

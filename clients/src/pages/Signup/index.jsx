@@ -4,6 +4,8 @@ import Button from '../../components/Button';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { register } from '../../assets';
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 const Signup = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState({
@@ -36,12 +38,13 @@ const Signup = () => {
         console.log(user);
         const { name, email, password, phone, gender, cpassword } = user;
         try {
-            const res = await fetch("/newregister", {
+            const res = await fetch(`${apiUrl}/user/register`, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ name, email, password, cpassword, phone, gender }),
+                credentials: "include",
             });
             const data = await res.json();
             console.log(data);

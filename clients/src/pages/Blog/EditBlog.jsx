@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import { Navigate, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { toast } from 'sonner';
 import BlogEditor from "./BlogEditor";
+import addIdsToHeadingsInContents from "../../lib/addIdsToHeadingsInContents";
+import preprocessContent from "../../lib/preprocessContent";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -12,10 +14,12 @@ export default function EditBlog() {
     const [summary, setSummary] = useState('');
     const [content, setContent] = useState('');
     const [files, setFiles] = useState('');
+    const [loading, setLoading] = useState(true);
 
     const getBlog = async (id) => {
+        setLoading(true);
         try {
-            const res = await fetch(`${apiUrl}/blog/${id}`);
+            const res = await fetch(`${apiUrl}/blog/getBlog/${id}`);
             const data = await res.json();
             if (res.ok && data.success) {
                 setTitle(data.data.title);
@@ -24,6 +28,8 @@ export default function EditBlog() {
             }
         } catch (error) {
             console.log(error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -31,12 +37,16 @@ export default function EditBlog() {
         getBlog(id);
     }, [id]);
 
+    if (loading) {
+        return <div className="opacity-50 w-full py-32 flex justify-center"><img src='/favicon.svg' alt="Loading..." className="w-1/6 h-1/6 animate-spin" /></div>;
+    }
+
     async function updateBlog(ev) {
         ev.preventDefault();
         const data = new FormData();
         data.set('title', title);
         data.set('summary', summary);
-        data.set('content', content);
+        data.set('content', preprocessContent(addIdsToHeadingsInContents(content)));
         data.set('id', id);
         if (files?.[0]) {
             data.set('file', files?.[0]);
@@ -57,7 +67,7 @@ export default function EditBlog() {
                 throw new Error(responseData.message);
             }
         } catch (error) {
-            toast.error(error);
+            toast.error(error.message);
         }
     }
 

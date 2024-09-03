@@ -57,20 +57,20 @@ function DarkMode() {
                 <div className="text-sky-600 h-7 md:h-8 w-7 md:w-8 border flex items-center justify-center border-sky-600 text-xl rounded-full text-center">
                     <ion-icon name={icon}></ion-icon>
                 </div>
-                <div className="absolute md:top-6 md:left-0 hidden group-hover:block z-[60] translate-x-[-30%] top-0 left-[54px]">
+                <div className="absolute md:top-6 md:left-0 hidden group-hover:block translate-x-[-30%] -top-1 left-[57px]">
                     <div className="hidden md:block py-3 translate-x-[30%]">
                         <div
-                            className="w-4 h-4 left-3 absolute mt-1 bg-white dark:bg-black rotate-45"
+                            className="w-4 h-4 left-3 absolute  -mt-1 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-b-[8px] border-b-gray-400 dark:border-b-gray-700"
                         ></div>
                     </div>
-                    <div className="bg-white/60 dark:bg-slate-950/90 backdrop-blur-sm md:bg-white md:dark:bg-black p-0 md:rounded-xl md:p-5 flex flex-row md:flex-col">
+                    <div className="bg-white/60 dark:bg-slate-950/90 backdrop-blur-sm md:bg-black-gradient-2 p-1 md:rounded-xl md:p-5 flex flex-row md:flex-col rounded-r-full">
                         {darkBtn.map((elm, index) => (
                             <div
                                 onClick={() => {
                                     setTheme(elm.text);
                                     setIcon(elm.icon);
                                 }}
-                                className={`${theme === elm.text ? 'text-sky-600' : 'text-black dark:text-white'} flex items-center gap-4 flex-row ${index !== darkBtn.length - 1 ? "md:mb-6" : "mb-0"}`}
+                                className={`${theme === elm.text ? 'text-sky-600' : 'text-black dark:text-white'} flex items-center gap-3 flex-row ${index !== darkBtn.length - 1 ? "md:mb-3" : "mb-0"}`}
                                 key={index}
                             >
                                 <div className={`${elm.icon === icon && 'hidden md:block'} md:h-auto md:w-auto h-7 w-7 border md:border-none border-sky-600 flex items-center justify-center rounded-full text-center ml-4 md:ml-0`}>

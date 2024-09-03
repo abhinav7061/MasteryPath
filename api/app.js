@@ -22,7 +22,15 @@ app.use("/api/v1/user", user);
 app.use("/api/v1/blog", blog);
 app.use('/api/v1/blog-cover', express.static(__dirname + '/uploads/blog_cover')); // route to  serve the static file(profile image in this project)
 
+// Handle undefined routes
+app.use((req, res, next) => {
+    const error = new Error(`Cannot find Resource on this server!`);
+    error.statusCode = 404;
+    next(error);
+});
+
 //using error middlewares
 app.use(ErrorHandling);
+
 
 module.exports = app;

@@ -1,8 +1,15 @@
 const { sendErrorResponse } = require("../lib/sendError");
 
 module.exports = (err, req, res, next) => {
+    // Set default values for error
     err.statusCode = err.statusCode || 500;
     err.message = err.message || 'Internal server error';
+
+
+    if (err.statusCode === 404) {
+        const message = err.message;
+        return sendErrorResponse(res, 404, message);
+    }
 
     if (err.name === 'CastError') {
         const message = `Resource not found. Invalid ID: ${err.value}`;

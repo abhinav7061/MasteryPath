@@ -3,6 +3,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'sonner';
 import BlogEditor from './BlogEditor';
+import addIdsToHeadingsInContents from '../../lib/addIdsToHeadingsInContents';
+import preprocessContent from '../../lib/preprocessContent';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -12,7 +14,6 @@ export default function CreateBlog() {
     const [summary, setSummary] = useState("");
     const [content, setContent] = useState("");
     const [files, setFiles] = useState(null);
-    const [redirect, setRedirect] = useState(false);
 
     async function createNewPost(ev) {
         ev.preventDefault();
@@ -24,7 +25,7 @@ export default function CreateBlog() {
             const data = new FormData();
             data.set('title', title);
             data.set('summary', summary);
-            data.set('content', content);
+            data.set('content', preprocessContent(addIdsToHeadingsInContents(content)));
             data.set('file', files[0]);
             ev.preventDefault();
             const response = await fetch(`${apiUrl}/blog/createBlog`, {
@@ -39,7 +40,7 @@ export default function CreateBlog() {
                 setSummary('');
                 setContent('')
                 setFiles(null);
-                setRedirect(true);
+                navigate('/blog');
             } else {
                 throw responseData.message;
             }
@@ -49,10 +50,6 @@ export default function CreateBlog() {
         }
     }
 
-    if (redirect) {
-        navigate('/blog');
-        return;
-    }
     return (
         <>
             <BlogEditor

@@ -30,6 +30,7 @@ exports.registerUser = async (req, res) => {
             message: "Registered Successfully",
         });
     } catch (err) {
+        sendErrorResponse(res, 500, error.message);
         console.log(err);
     }
 };

@@ -1,4 +1,3 @@
-import './App.css'
 import { UserContext, Layout, Home, Login, Signup, ForgotPassword, Blog, CreateBlog, BlogPage, EditBlog, Chat, NoPage } from './modules';
 import { Routes, Route } from 'react-router-dom';
 
