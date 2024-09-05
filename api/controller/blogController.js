@@ -7,8 +7,8 @@ const { deleteFile } = require("../lib/deleteFile");
 exports.getAllBlogSummaries = async (req, res) => {
     try {
         const limit = req.query.limit || 8;
-        const page = req.query.page || 0;
-        const offset = page * limit;
+        const page = req.query.page || 1;
+        const offset = (page - 1) * limit;
 
         const blogsSummary = await Blog.find()
             .select("title summary cover author createdAt")
@@ -26,24 +26,27 @@ exports.getAllBlogSummaries = async (req, res) => {
 };
 
 exports.getBlog = async (req, res) => {
-    const { id } = req.params;
-    const postDoc = await Blog.findById(id).populate('author', ['name']);
-    res.json({
-        success: true,
-        data: postDoc
-    });
-};
-
-exports.isAuthor = async (req, res) => {
     try {
-        const userId = req.user._id;
-        const authorId = req.body.authorId;
-        res.status(200).json({
-            success: userId == authorId,
+        const { id } = req.params;
+        const postDoc = await Blog.findById(id).populate('author', ['name']);
+        if (!postDoc) {
+            return sendErrorResponse(res, 404, `Your blog cann't be found`)
+        }
+        res.json({
+            success: true,
+            data: postDoc
         });
     } catch (error) {
-        sendErrorResponse(res, 400, error.message);
+        sendErrorResponse(res, 500, error.message);
     }
+};
+
+exports.isBlogWriter = async (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: "User is Blog writer",
+        isBlogWriter: true,
+    });
 }
 
 exports.createBlog = async (req, res) => {
@@ -99,5 +102,23 @@ exports.editBlog = async (req, res) => {
         });
     } catch (error) {
         sendErrorResponse(res, 401, error)
+    }
+};
+
+exports.deleteBlog = async (req, res) => {
+    try {
+        const { blogId } = req.params;
+        const postDoc = await Blog.findById(blogId);
+        if (!postDoc) {
+            return sendErrorResponse(res, 404, 'Blog not found');
+        }
+        await deleteFile('uploads/blog_cover/', postDoc.cover);
+        await postDoc.deleteOne();
+        res.json({
+            success: true,
+            message: 'Blog Deleted Successfully'
+        });
+    } catch (error) {
+        sendErrorResponse(res, 401, error.message)
     }
 };

@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken")
 const User = require("../models/userSchema")
+const Blog = require("../models/blogSchema")
 const { sendErrorResponse } = require("../lib/sendError")
 
 // Middleware to check if the user has a valid token
@@ -26,6 +27,23 @@ exports.isAuthenticatedUser = async (req, res, next) => {
             return sendErrorResponse(res, 404, "User not found");
         }
         req.user = user;
+        next();
+    } catch (error) {
+        sendErrorResponse(res, 500, error.message);
+    }
+}
+
+exports.checkBlogAuthor = async (req, res, next) => {
+    try {
+        const { blogId } = req.params;
+        const authorId = req.user._id;
+        const postDoc = await Blog.findById(blogId);
+        if (!postDoc) {
+            return sendErrorResponse(res, 404, 'Blog not found');
+        }
+        if (postDoc.author.toString() !== authorId.toString()) {
+            return sendErrorResponse(res, 400, 'You are not author of this blog');
+        }
         next();
     } catch (error) {
         sendErrorResponse(res, 500, error.message);

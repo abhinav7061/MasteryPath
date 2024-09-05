@@ -8,6 +8,7 @@ import EditBlogBtn from "./EditBlogBtn";
 import BlogPageSkeletonloading from "./BlogPageSkeletonloading";
 import BlogContents from "../../components/BlogContents";
 import Toc from "./Toc";
+import DeleteBlog from "./DeleteBlog";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -67,13 +68,13 @@ const BlogPage = () => {
                                 <time className={`font-poppins font-bold text-base md:text-xl ${color.textSlate}`}>{formattedDate}</time>
                                 <div className={`${styles.smHeading} text-green-700`}>by @{author}</div>
                             </div>
-                            <EditBlogBtn authorId={postInfo.author._id} blogId={id} />
+                            <EditBlogBtn blogId={id} />
+                            <DeleteBlog blogId={id} />
                         </div>
                     </div>
                     {cover && <div className="mb-5">
                         <img src={`${apiUrl}/blog-cover/${cover}`} alt="" className="object-fill w-full rounded-2xl h-52 xs:h-80" />
                     </div>}
-                    {/* <div className="content" dangerouslySetInnerHTML={{ __html: content }} /> */}
                     <BlogContents content={content} />
                 </div>
             </div>
