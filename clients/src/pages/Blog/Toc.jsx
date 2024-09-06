@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 const Toc = ({ content, className }) => {
     const [toc, setToc] = useState([])
+    const [currentId, setCurrentId] = useState(null);
     const [showTOC, setShowTOC] = useState(false);
     const getTOC = () => {
         const toc = []
@@ -24,9 +25,34 @@ const Toc = ({ content, className }) => {
 
         setToc(toc);
     }
+
+    const handleScroll = () => {
+        const scrollPosition = window.scrollY + 80;
+        let currentId = null;
+
+        toc.forEach(item => {
+            const element = document.getElementById(item.id);
+            if (element && element.offsetTop <= scrollPosition) {
+                currentId = item.id;
+            }
+        });
+
+        setCurrentId(currentId);
+    };
+
     useEffect(() => {
         getTOC();
     }, [])
+
+    useEffect(() => {
+        if (toc.length > 0) {
+            window.addEventListener('scroll', handleScroll);
+            handleScroll(); // Call once to set the initial state
+        }
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, [toc]);
 
     return (
         <>
@@ -40,8 +66,9 @@ const Toc = ({ content, className }) => {
                                 return (
                                     <li
                                         key={index}
-                                        className={`ml-${indentLevel * 4} flex hover:text-sky-300 transition-all duration-300`}
+                                        className={`ml-${indentLevel * 4} flex transition-all duration-300 ${currentId === item.id ? 'text-sky-500' : 'hover:text-sky-300'}`}
                                         style={{ marginLeft: `${indentLevel * 1.5}rem` }}
+                                        onClick={() => setCurrentId(item.id)}
                                     >
                                         <strong className='mr-2'> -</strong> <a href={`#${item.id}`} className='text-sm hover:underline'>{item.text}</a>
                                     </li>
