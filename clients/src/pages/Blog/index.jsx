@@ -5,12 +5,13 @@ import BlogItem from './BlogItem';
 import BlogItemSkeletonloading from './BlogItemSkeletonloading';
 import useBlogSummaries from '../../hooks/useBlogSummaries';
 import BlogSearchSort from './BlogSearchSort';
+import ErrorMessage from '../../components/ErrorMessage';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
 const Blog = () => {
   const { isAuthenticatedUser } = useUserAuthentication();
-  const { blogs, hasMore, loading, loaderDiv, perPage, search, setSearch, sort, setSort, resetBlogSummaries } = useBlogSummaries(`${apiUrl}/blog`);
+  const { blogs, hasMore, loading, loaderDiv, perPage, search, setSearch, sort, setSort, resetBlogSummaries, errorMessage } = useBlogSummaries(`${apiUrl}/blog`);
   const handleSubmit = (e) => {
     e.preventDefault();
     resetBlogSummaries();
@@ -20,6 +21,9 @@ const Blog = () => {
     window.scrollTo(0, 0);
   }, [])
 
+  if (errorMessage) {
+    return <ErrorMessage heading='Unable to fetch blog' message={errorMessage} action={resetBlogSummaries} />
+  }
 
   return (
     <div>

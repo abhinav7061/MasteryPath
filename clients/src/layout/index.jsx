@@ -21,10 +21,11 @@ const Layout = () => {
                 setIsAuthenticatedUser(data.isUserAuthenticated);
                 return;
             } else {
-                toast.error("Internal server");
+                throw new Error(data?.message || 'Internal Server Error');
             }
         } catch (error) {
-            console.log(error);
+            console.log(error.message);
+            toast.error(error.message);
         } finally {
             setLoading(false);
         }

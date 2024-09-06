@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import BlogEditor from "./BlogEditor";
 import addIdsToHeadingsInContents from "../../lib/addIdsToHeadingsInContents";
 import preprocessContent from "../../lib/preprocessContent";
+import ErrorMessage from "../../components/ErrorMessage";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -15,9 +16,11 @@ export default function EditBlog() {
     const [content, setContent] = useState('');
     const [files, setFiles] = useState('');
     const [loading, setLoading] = useState(true);
+    const [errorMessage, setErrorMessage] = useState(null)
 
     const getBlog = async (id) => {
         setLoading(true);
+        setErrorMessage(null);
         try {
             const res = await fetch(`${apiUrl}/blog/getBlog/${id}`);
             const data = await res.json();
@@ -25,9 +28,12 @@ export default function EditBlog() {
                 setTitle(data.data.title);
                 setContent(data.data.content);
                 setSummary(data.data.summary);
+            } else {
+                throw new Error(data?.message || "error fetching the blog");
             }
         } catch (error) {
-            console.log(error);
+            console.log(error.message);
+            setErrorMessage(error.message);
         } finally {
             setLoading(false);
         }
@@ -39,6 +45,9 @@ export default function EditBlog() {
 
     if (loading) {
         return <div className="opacity-50 w-full py-32 flex justify-center"><img src='/favicon.svg' alt="Loading..." className="w-1/6 h-1/6 animate-spin" /></div>;
+    }
+    if (errorMessage) {
+        return <ErrorMessage heading='Unable to fetch blog' message={errorMessage} action={getBlog} />
     }
 
     async function updateBlog(ev) {

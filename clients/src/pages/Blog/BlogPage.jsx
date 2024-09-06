@@ -9,6 +9,7 @@ import BlogPageSkeletonloading from "./BlogPageSkeletonloading";
 import BlogContents from "../../components/BlogContents";
 import Toc from "./Toc";
 import DeleteBlog from "./DeleteBlog";
+import ErrorMessage from "../../components/ErrorMessage";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -17,20 +18,23 @@ const BlogPage = () => {
     const { scrollYProgress } = useScroll();
     const [postInfo, setPostInfo] = useState({});
     const [loading, setLoading] = useState(true);
+    const [errorMessage, setErrorMessage] = useState(null)
     const { id } = useParams();
 
-    const getPost = async () => {
-        setLoading(true)
+    const getBlog = async () => {
+        setLoading(true);
+        setErrorMessage(null);
         try {
             const res = await fetch(`${apiUrl}/blog/getBlog/${id}`);
             const data = await res.json();
             if (data.success) {
                 setPostInfo(data.data);
             } else {
-                throw new Error(data.message);
+                throw new Error(data?.message || 'Unable to fetch blog');
             }
         } catch (error) {
-            console.log(error);
+            console.log(error.message);
+            setErrorMessage(error.message);
         } finally {
             setLoading(false);
         }
@@ -38,11 +42,15 @@ const BlogPage = () => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
-        getPost();
+        getBlog();
     }, [id]);
 
     if (loading) {
         return <div><BlogPageSkeletonloading /></div>;
+    }
+
+    if (errorMessage) {
+        return <ErrorMessage heading='Unable to fetch blog' message={errorMessage} action={getBlog} />
     }
 
     const title = postInfo.title;

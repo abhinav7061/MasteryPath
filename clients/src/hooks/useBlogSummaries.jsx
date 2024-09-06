@@ -10,12 +10,14 @@ const useBlogSummaries = (apiEndpoint) => {
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(true);
+    const [errorMessage, setErrorMessage] = useState(null)
     const [search, setSearch] = useState('');
     const [sort, setSort] = useState('newer');
     const [searchPlaceholder, setSearchPlaceholder] = useState(null);
 
     const fetchMoreBlogs = useCallback(async () => {
         setLoading(true);
+        setErrorMessage(null);
         try {
             const response = await fetch(`${apiEndpoint}/allBlogSummaries?page=${page}&limit=${perPage}&search=${encodeURIComponent(search)}&sort=${encodeURIComponent(sort)}`);
             const data = await response.json();
@@ -23,10 +25,11 @@ const useBlogSummaries = (apiEndpoint) => {
                 setBlogs(prevBlogs => [...new Set([...prevBlogs, ...data.blogsSummary])]);
                 if (data.blogsSummary.length < perPage) setHasMore(false);
             } else {
-                throw new Error(data.message)
+                throw new Error(data?.message || 'Error fetching the blogs')
             }
         } catch (error) {
-            toast.error(error.message);
+            console.log(error.message);
+            setErrorMessage(error.message);
         } finally {
             setLoading(false);
         }
@@ -65,6 +68,7 @@ const useBlogSummaries = (apiEndpoint) => {
         setBlogs([]);
         setHasMore(true);
         setLoading(true);
+        setErrorMessage(null);
 
         // If already on the first page, fetch new BlogsSummary; otherwise, reset the page to 1
         if (page === 1) {
@@ -75,7 +79,7 @@ const useBlogSummaries = (apiEndpoint) => {
     };
 
     // Return the state variables and functions for external usage
-    return { blogs, loading, hasMore, search, sort, loaderDiv, perPage, setSearch, setSort, resetBlogSummaries, searchPlaceholder };
+    return { blogs, loading, hasMore, search, sort, loaderDiv, perPage, setSearch, setSort, resetBlogSummaries, searchPlaceholder, errorMessage };
 };
 
 // Export the custom hook for use in other components
