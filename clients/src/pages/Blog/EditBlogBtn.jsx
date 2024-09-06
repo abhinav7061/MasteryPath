@@ -5,17 +5,16 @@ import { useUserAuthentication } from '../../context/userContext';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
-const EditBlogBtn = ({ authorId, blogId }) => {
+const EditBlogBtn = ({ blogId }) => {
     const { isAuthenticatedUser } = useUserAuthentication();
     const [isAuthor, setIsAuthor] = useState(false);
     const checkAuthor = async () => {
         try {
-            const response = await fetch(`${apiUrl}/blog/isAuthor`, {
+            const response = await fetch(`${apiUrl}/blog/isAuthor/${blogId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ authorId }),
                 credentials: 'include'
             })
             const data = await response.json();
