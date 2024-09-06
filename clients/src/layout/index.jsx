@@ -61,10 +61,10 @@ const Layout = () => {
             {loading ? <div className='flex justify-center items-center text-5xl bg-white dark:bg-slate-950 text-black dark:text-white h-[100vh]'><img src={logo} width={250} alt="Loading..." className='animate-pulse' /></div> : (<>
                 <div className={`${styles.flexStart}`}>
                     <div className={`${styles.boxWidth} ${styles.paddingX} relative`}>
-                        <div className='relative w-full'>
+                        <div className='relative w-full min-h-screen flex flex-col'>
                             <Navbar />
                             <Toaster position="top-right" richColors closeButton='true' />
-                            <div className='my-4 md:my-8'>
+                            <div className='my-4 md:my-8 flex-grow'>
                                 <Suspense fallback={<div className='flex justify-center items-center text-5xl text-black dark:text-white h-[100vh]'><img src={logo} width={250} alt="Loading..." className='animate-pulse' /></div>}>
                                     <Outlet />
                                 </Suspense>
