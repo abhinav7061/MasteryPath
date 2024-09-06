@@ -28,11 +28,12 @@ const DeleteBlog = ({ blogId }) => {
                 navigate('/blog');
             }
             else {
-                console.log({ data });
-                toast.error('Failed to delete blog');
+                throw new Error(data.message);
             }
         } catch (error) {
-
+            console.log(error.message);
+            toast.dismiss(toastId);
+            toast.error('Failed to delete blog');
         }
     }
 
