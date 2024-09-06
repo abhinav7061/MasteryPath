@@ -7,7 +7,7 @@ const useBlogSummaries = (apiEndpoint) => {
     const perPage = 4;
     const loaderDiv = useRef(null);
     const [blogs, setBlogs] = useState([]);
-    const [page, setPage] = useState(0);
+    const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState('');
@@ -20,7 +20,6 @@ const useBlogSummaries = (apiEndpoint) => {
             const response = await fetch(`${apiEndpoint}/allBlogSummaries?page=${page}&limit=${perPage}&search=${encodeURIComponent(search)}&sort=${encodeURIComponent(sort)}`);
             const data = await response.json();
             if (data.success) {
-                console.log(data.blogsSummary)
                 setBlogs(prevBlogs => [...new Set([...prevBlogs, ...data.blogsSummary])]);
                 if (data.blogsSummary.length < perPage) setHasMore(false);
             } else {
@@ -71,7 +70,7 @@ const useBlogSummaries = (apiEndpoint) => {
         if (page === 1) {
             fetchMoreBlogs();
         } else {
-            setPage(0);
+            setPage(1);
         }
     };
 
